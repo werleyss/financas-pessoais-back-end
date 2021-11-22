@@ -18,9 +18,9 @@ class CreateFinanceirosTable extends Migration
             $table->string('descricao', 120);
             $table->double('valor');            
             $table->date('dt_vencimento');           
-            $table->date('dt_pagamento');
+            $table->date('dt_pagamento')->nullable();
             $table->string('tipo',1);
-            $table->string('status', 2);
+            $table->string('status', 1)->default('N');
             $table->foreignId('conta_id')->constrained('contas');
             $table->foreignId('categoria_id')->constrained('categorias');
             $table->foreignId('user_id')->constrained('users');

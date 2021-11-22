@@ -16,14 +16,16 @@ class FinanceiroController extends Controller
         $this->item = $item;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $dataForm = $request->all();
         return FinanceiroResource::collection($this->item::paginate($this->totalPage));
     }
 
     public function store(Request $request)
     {
         $dataForm = $request->all();
+        $dataForm['user_id'] = auth()->user()->id;
         $insert = $this->item->create($dataForm);
 
         return new FinanceiroResource($insert);

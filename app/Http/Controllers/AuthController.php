@@ -22,7 +22,7 @@ class AuthController extends Controller
         $credenciais = $request->only(['email', 'password']);
 
         if(!$token = JWTAuth::attempt($credenciais)){
-            return response()->json(['error' => 'Usuário ou senha incorreto!'], 401);
+            return response()->json(['message' => 'Usuário ou senha incorreto!'], 400);
         }
         
         return $this->respondWithToken($token);

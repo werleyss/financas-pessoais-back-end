@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ContaController extends Controller
 {
     private $item;
-    private $totalPage = 10;
+    private $totalPage = 1000;
 
     public function __construct(Conta $item) 
     {
@@ -18,12 +18,20 @@ class ContaController extends Controller
 
     public function index(Request $request)
     {
+        $dataForm = $request->all();
+        
+        if(key_exists('per_page', $dataForm)) 
+        {
+            $dataForm['per_page'] > 0 ? $this->totalPage = $dataForm['per_page'] : $this->totalPage;
+        }
+
         return ContaResource::collection($this->item::paginate($this->totalPage));
     }
 
     public function store(Request $request)
     {
         $dataForm = $request->all();
+        $dataForm['user_id'] = auth()->user()->id;
         $insert = $this->item->create($dataForm);
 
         return new ContaResource($insert);
