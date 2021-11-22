@@ -33,6 +33,7 @@ Esse projeto é finalidade de criar sistema de controle de finanças pessoais de
 - docker-compose exec app composer install 
 - docker-compose exec app cp .env.example .env 
 - docker-compose exec app php artisan key:generate 
+- docker-compose exec app php artisan jwt:secret 
 - docker-compose exec app php artisan migrate 
 
 Acesse a API na URL http://localhost:8080/api 
