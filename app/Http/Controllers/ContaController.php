@@ -11,7 +11,7 @@ class ContaController extends Controller
     private $item;
     private $totalPage = 1000;
 
-    public function __construct(Conta $item) 
+    public function __construct(Conta $item)
     {
         $this->item = $item;
     }
@@ -19,13 +19,25 @@ class ContaController extends Controller
     public function index(Request $request)
     {
         $dataForm = $request->all();
-        
-        if(key_exists('per_page', $dataForm)) 
-        {
+        $query = $this->item::query();
+
+        if(key_exists('per_page', $dataForm)) {
             $dataForm['per_page'] > 0 ? $this->totalPage = $dataForm['per_page'] : $this->totalPage;
         }
 
-        return ContaResource::collection($this->item::paginate($this->totalPage));
+        if(key_exists('id', $dataForm)) {
+            $query->where('id', $dataForm['id']);
+        }
+
+        if(key_exists('descricao', $dataForm)) {
+            $query->where('descricao', 'like', '%' . $dataForm['descricao'] . '%');
+        }
+
+        if(key_exists('status', $dataForm)) {
+            $query->where('status', $dataForm['status']);
+        }
+
+        return ContaResource::collection($query->paginate($this->totalPage));
     }
 
     public function store(Request $request)
